@@ -8,8 +8,6 @@
 #include "iterator.h"
 #define node_name(args...) node_make((data_creator)&name_make,3,args)
 
-
-
 int main() {
     node * vn = node_name("Vydya","Narayana",19);
     node * yn = node_link(vn, node_name("Yajna","Narayana",24));
