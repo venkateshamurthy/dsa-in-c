@@ -13,7 +13,7 @@ char * name_to_string (name * n);
 /* Free Memory */
 void   name_free(name * n);
 
-/* Create */
+/* Create Name. */
 name * name_create(const char * f, const char * l, int ag);
 
 /* 
