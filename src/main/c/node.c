@@ -6,9 +6,13 @@
 #include "node.h"
 #include "iterator.h"
 
+/* 
+    This is var args based function.
+    data_creator is a typedefed function that builds data node.
+*/
 node * node_make (data_creator dc, int n,  ...){
     node * p = (node *) malloc(sizeof(node));
-    va_list ap; 
+    va_list ap;
     va_start(ap, n);
     p -> data = (*dc)(ap);
     va_end(ap);
@@ -32,8 +36,7 @@ void node_display_recursive(node * n, data_to_string stringer) {
 }
 
 void node_display_iterative(node * n, data_to_string stringer) {
-    for(iterator it = iterator_init(n); iterator_has(it);
-                 it = iterator_next(it)) {
+    for(iterator it = iterator_init(n); iterator_has(it); it = iterator_next(it)) {
         node_display(it.curr, "iteratively", stringer);
     }
 }
@@ -41,6 +44,7 @@ void node_display_iterative(node * n, data_to_string stringer) {
 int node_size(node * n) {
     if (n == NULL)
         return 0;
+    
     int _size = (n == NULL) ? 0 : 1;
     while(n -> next!=NULL) {
         _size++;
