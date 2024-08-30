@@ -1,1 +1,3 @@
 DS problems in C language
+
+Assuming you have gcc on your mac; just run gcc *.c. Then say ./a.out
