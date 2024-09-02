@@ -27,7 +27,7 @@ node * node_va_data(data_creator dc, int count, va_list* ap) {
 
 node * node_last(node * root) {
     node * q = root;
-    do { q = q -> next;} while(q->next!= NULL); //Get to the last node
+    while(q!=NULL && q->next!=NULL) { q = q -> next;} //Get to the last node
     return q;
 }
 
