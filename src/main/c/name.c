@@ -5,7 +5,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <assert.h>
-#define node_name(args...) node_make((data_creator)&name_make,3,args)
+#include "utils.h"
 
 typedef struct _name {
     char * first;
@@ -34,19 +34,16 @@ void name_free(name * n) {
 
 name * name_create(const char * f, const char * l, int ag){
     name * n = (name *) malloc(sizeof(name));
-    n -> first = (char *) malloc(strlen(f) + 1);
-    n -> last = (char *)  malloc(strlen(l) + 1);
-    
-    strcpy(n -> first, f);
-    strcpy(n -> last,  l);
+    n -> first = string_allocate(f);
+    n -> last =  string_allocate(l);
     n -> age = ag;
     return n;
 }
 
-name * name_make( va_list ap) {
-    const char * first = va_arg(ap, char*);
-    const char * last = va_arg(ap, char*);
-    int age = va_arg(ap, int);
-    name * n = name_create(first, last, age);
-    return n;
+name * name_make( va_list* ap) {
+    return name_create (
+       va_arg(*ap, char*),
+       va_arg(*ap, char*),
+       va_arg(*ap, int)
+    );
 }

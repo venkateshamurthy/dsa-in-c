@@ -3,29 +3,77 @@
 #include <string.h>
 #include <stdarg.h>
 #include <limits.h>
+#include <assert.h>
+#include <stdbool.h>
 #include "node.h"
 #include "iterator.h"
+#include "utils.h"
 
-/* 
-    This is var args based function.
-    data_creator is a typedefed function that builds data node.
-*/
-node * node_make (data_creator dc, int n,  ...){
-    node * p = (node *) malloc(sizeof(node));
-    va_list ap;
-    va_start(ap, n);
-    p -> data = (*dc)(ap);
-    va_end(ap);
-    return p;
+node * node_allocate(data_creator dc, va_list* ap) {
+    node * root = (node *) malloc(sizeof(node));
+    root -> data = (*dc)(ap);
+    root -> next = NULL;
+    return root;
 }
 
-node * node_link( node * p, node *c) {
-    p -> next = c;
-    return c;
+node * node_va_data(data_creator dc, int count, va_list* ap) {
+      node * root = node_allocate(dc, ap);
+      // Please note the use of pre-decrement on count as root get allocated outside the loop
+      for (node * p = root; --count > 0; p = p -> next) {
+          p -> next = node_allocate(dc, ap);
+      }
+      return root; // return the head/root node
+}
+
+node * node_last(node * root) {
+    node * q = root;
+    do { q = q -> next;} while(q->next!= NULL); //Get to the last node
+    return q;
+}
+
+node * node_data (data_creator dc, int count, ...) {
+    va_list ap;
+    va_start(ap, count);
+    node * result = node_va_data(dc, count, &ap);
+    va_end(ap);
+    return result;
+}
+
+node * detect_loop_in_linkedlist(node * head, bool break_free_loop) {
+    node * fast = head, * normal = head;
+    bool loop_detected = false;
+
+    while ( !loop_detected && fast != NULL && fast->next != NULL && normal->next != NULL) {
+        normal = normal->next;
+        fast = fast->next->next;
+        loop_detected = fast == normal;
+    }
+
+    if (loop_detected) {
+
+        // Break free the loop if break_free_loop is passed as true
+        if (break_free_loop) {
+            normal = head;
+            node * previous_to_fast = fast;
+            while (normal != fast) {
+                normal = normal -> next;
+                previous_to_fast = fast;
+                fast = fast -> next;
+            }
+            previous_to_fast -> next = NULL;
+        }
+
+        // return the intersection/meeting node if as long as loop is detected
+        return normal;
+    }
+
+    // No loop is detected and hence return NULL
+    return NULL;
 }
 
 void node_display(node * n, const char* context,  data_to_string stringer) {
-    printf ("Displaying %s..Name:%s\n", context, (*stringer)(n->data));
+    if (n!=NULL)
+        printf ("Displaying %s:%s\n",  context, (*stringer)(n->data));
 }
 
 void node_display_recursive(node * n, data_to_string stringer) {
@@ -50,6 +98,7 @@ int node_size(node * n) {
         _size++;
         n = n -> next;
     }
+
     return _size;
 }
 
@@ -59,8 +108,7 @@ void node_free(node * n,  free_up free_er) {
          n -> next = NULL;
     }
     
-    if (n->data!=NULL) {
+    if (n->data != NULL) {
        (*free_er)(n->data);
     }
 }
-

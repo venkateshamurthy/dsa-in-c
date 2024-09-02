@@ -7,7 +7,8 @@
 typedef enum ITER_STATE {
     PENDING,
     IN_PROGRESS,
-    COMPLETED} ITER_STATE;
+    COMPLETED
+} ITER_STATE;
 
 typedef struct _iter {
     node * curr;
