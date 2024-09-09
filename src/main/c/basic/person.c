@@ -30,12 +30,9 @@ person * person_ptr_dup (const person * p) {
     copy -> address = strdup(p -> address);
     return copy;
 }
-char buf[2556];
+char buf[256];
 char * person_display(person p) {
-    buf[0]='\0';
-    sprintf (buf, "%s,%d,%s,%d,%s\n",
-    p.name,p.age,p.address,p.gender,p.phone);
-    return buf;
+    return person_ptr_display(&p);
 }
 char * person_ptr_display(person * p) {
     buf[0]='\0';

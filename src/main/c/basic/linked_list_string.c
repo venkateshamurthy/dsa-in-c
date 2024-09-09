@@ -1,10 +1,21 @@
 #include "linked_list_string.h"
 
+char * string_to_string(void * data) {
+    return (char *)data;
+}
 
 ll * ll_string(const char * data) {
-    ll * node = (ll*) malloc(sizeof(ll));
+    ll * node = (ll*) malloc(1*sizeof(ll));
     node -> data = strdup(data);
     return node;
+}
+
+ll * ll_strings_va(va_list ap, int count) {
+    ll * head = ll_string(va_arg(ap, char*));//i=0
+    for (ll* link = head; --count > 0; link = link -> next) {
+        link -> next = ll_string(va_arg(ap, char*));
+    }
+    return head;
 }
 
 ll * ll_strings(int count, const char* data[]) {
@@ -19,7 +30,7 @@ ll * ll_strings(int count, const char* data[]) {
  
 void ll_strings_display (ll* head) {
     if (head != NULL) {
-        printf("\n%s,", (char *)head->data);
+        printf("\n%s,", string_to_string(head->data));
         ll_strings_display(head->next);
     }
 }

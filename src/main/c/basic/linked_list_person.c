@@ -8,8 +8,16 @@ ll * ll_person(const person data) {
     return node;
 }
 
+ll * ll_persons_va(va_list ap, int count) {
+    ll * head = ll_person(va_arg(ap, person));//i=0
+    for (ll* link = head; --count > 0; link = link -> next) {
+        link -> next = ll_person(va_arg(ap, person));
+    }
+    return head;
+}
+
 ll * ll_persons(int count, const person data[]) {
-    int i = 0;
+    int i=0;
     ll * head = ll_person(data[i++]);
     for (ll* link = head; --count > 0; link = link -> next) {
         link -> next = ll_person(data[i++]);
