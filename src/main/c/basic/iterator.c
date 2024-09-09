@@ -11,12 +11,10 @@ iterator iterator_init(ll* head) {
 
 /* jump iterator by one step. */
 ll* iterator_next(iterator* it) {
-    ll * node = NULL;
     if ( it -> curr != NULL) {
-        node = it -> curr;
         it -> curr = it -> curr -> next;
     }
-    return node;
+    return it -> curr;
 }
 
 /* whether iterator has any  more elements. */
