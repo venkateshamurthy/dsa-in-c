@@ -9,21 +9,36 @@ typedef struct _ll {
     struct _ll * next;
 } ll;
 
+/* Head of singly linked list*/
+extern ll * head;
+
+/* Typedefs. */
 typedef void        (*free_data)(void * ptr);
 typedef char *      (*to_string)(void * data);
 typedef ll   *      (*node_fabricator)(va_list ap, int count);
+typedef ll   *      (*node_maker)(void * data);
+typedef bool        (*equalizer)(void * expected, void * actual);
 
-void ll_free        (ll * head, free_data free_er);
-void ll_display     (ll * head, char * context, to_string tos);
-void ll_display_iterate(ll * head, char * context, to_string tos);
+/* CRUD operations */
 ll * ll_from_va     (node_fabricator fa, int count, ...);
-
+ll * ll_append      (ll * appending_node);
+ll * ll_prepend     (ll * prepending_node);
+ll * ll_remove      (ll * removing_node, free_data free_er);
 ll * ll_insert      (ll * current, ll * to_be_inserted);
-ll * ll_last        (const ll * head);
-ll * ll_middle      (const ll * head);
-ll * ll_last_n      (const ll * head, int nth_node_from_last);
-int  sizeof_ll      (const ll * head);
-ll * ll_detect_loop (const ll * head, bool break_free_loop);
+void ll_free        (ll * node, free_data free_er);
+
+/* Display  operations*/
+void ll_display     (ll * node, char * context, to_string tos);
+void ll_display_all (char * context, to_string tos);
+void ll_display_iterate(ll * node, char * ctxt, to_string tos);
+
+
+/* Problem Solving */
+ll * ll_detect_loop (const ll * node, bool break_free_loop);
+int  sizeof_ll      (const ll * node);
+ll * ll_last        (const ll * node);
+ll * ll_middle      (const ll * node);
+ll * ll_last_n      (const ll * node, int nth_node_from_last);
 #endif
 
 

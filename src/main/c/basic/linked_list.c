@@ -6,32 +6,34 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+
 ll * ll_from_va(node_fabricator fa, int count, ...) {
     va_list ap;
     va_start(ap, count);
-    ll * head = (*fa)(ap, count);
+    ll * node = (*fa)(ap, count);
     va_end(ap);
-    return head;
+    return head = node;
 }
 
-void ll_free( ll* p, free_data free_er) {
-    if (p != NULL) {
-        ll_free(p->next, free_er);
-        (*free_er)(p->data);
-        free(p);
+void ll_free(ll* node, free_data free_er) {
+    if (node != NULL) {
+        ll_free(node->next, free_er);
+        (*free_er)(node->data);
+        free(node);
     }
 }
 
-void ll_display(ll* p, char * context, to_string tos) {
-    if (p != NULL) {
-        printf("%s: %s\n",context, (*tos)(p->data));
-        ll_display(p->next, context, tos);
+void ll_display(ll* node, char * context, to_string tos) {
+    if (node != NULL) {
+        printf("%s: %s\n",context, (*tos)(node->data));
+        ll_display(node->next, context, tos);
     }
 }
 
-void ll_display_iterate(ll* p, char * context, to_string tos) {
-    for (iterator it = iterator_init(p); iterator_has(&it); p = iterator_next(&it)) {
-        printf("%s: %s\n",context, (*tos)(p->data));
+
+void ll_display_iterate(ll* node, char * context, to_string tos) {
+    for (iterator it = iterator_init(node); iterator_has(&it); node = iterator_next(&it)) {
+        printf("%s: %s\n",context, (*tos)(node->data));
     }
 }
 
@@ -41,19 +43,42 @@ ll * ll_insert(ll * current, ll * new_node) {
     current -> next = new_node;
     return current;
 }
-ll * ll_last  (const ll * head) {
-    if (head == NULL)
+
+ll * ll_append(ll * appending_node) {
+    ll * last = ll_last(head);
+    return ll_insert(last, appending_node);
+}
+
+ll * ll_prepend(ll * prepending_node) {
+    prepending_node -> next = head;
+    return head = prepending_node;
+}
+
+bool ll_remove(ll * removing_node, equalizer equalizer, free_data free_er) {
+    ll * p = head;
+    ll *old=p;
+    for(iterator it = iterator_init(p); iterator_has(&it);
+             p = iterator_next(&it)) {
+        if (p == removing_node || (*equalizer)(removing_node->data, p->data)) {
+            
+            return true;
+        }
+    }
+}
+
+ll * ll_last  (const ll * node) {
+    if (node == NULL)
         return NULL;
-    ll* link = (ll*) head;
+    ll* link = (ll*) node;
     while (link -> next != NULL) {
         link = link -> next;
     }
     return link;
 }
 
-ll * ll_middle (const ll * head) {
-    ll* fast = (ll*)head;
-    ll* slow = (ll*)head;
+ll * ll_middle (const ll * node) {
+    ll* fast = (ll*)node;
+    ll* slow = (ll*)node;
     while(fast && fast -> next && fast -> next -> next) {
         slow = slow -> next;
         fast = fast -> next -> next;
@@ -61,9 +86,9 @@ ll * ll_middle (const ll * head) {
     return slow;
 }
 
-ll * ll_last_n (const ll * head, int n) {
-    ll* fast = (ll*) head;
-    ll* slow = (ll*) head;
+ll * ll_last_n (const ll * node, int n) {
+    ll* fast = (ll*) node;
+    ll* slow = (ll*) node;
     while (--n > 0 && fast) fast = fast -> next;
     while (fast -> next) {
         slow = slow -> next;
@@ -72,10 +97,10 @@ ll * ll_last_n (const ll * head, int n) {
     return slow;
 }
 
-int sizeof_ll (const ll * head) {
-    if (head == NULL) return 0;
+int sizeof_ll (const ll * node) {
+    if (node == NULL) return 0;
     int sz = 1;
-    ll* link = (ll*) head;
+    ll* link = (ll*) node;
     while (link -> next != NULL) {
         link = link -> next;
         sz++;
@@ -83,9 +108,9 @@ int sizeof_ll (const ll * head) {
     return sz;
 }
 
-ll * ll_detect_loop (const ll * head, bool break_free_loop) {
+ll * ll_detect_loop (const ll * node, bool break_free_loop) {
 
-    ll * fast = (ll*)head, * normal = (ll*)head;
+    ll * fast = (ll*)node, * normal = (ll*)node;
     bool loop_detected = false;
 
     while ( !loop_detected && fast != NULL && fast->next != NULL && normal->next != NULL) {
@@ -98,7 +123,7 @@ ll * ll_detect_loop (const ll * head, bool break_free_loop) {
 
         // Break free the loop if break_free_loop is passed as true
         if (break_free_loop) {
-            normal = (ll*)head;
+            normal = (ll*)node;
             ll * previous_to_fast = fast;
             while (normal != fast) {
                 normal = normal -> next;

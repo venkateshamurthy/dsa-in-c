@@ -16,7 +16,9 @@ typedef struct _iter {
 } iterator;
 
 iterator  iterator_init(ll*        head);
-ll*       iterator_next(iterator*  it);
-bool      iterator_has (iterator*  it);
+bool  iterator_has (iterator*  it);
+bool  iterator_has_next (iterator*  it);
+ll*   iterator_next(iterator*  it);
+ll*   iterator_next_steps(iterator* it,  int* steps);
 
 #endif

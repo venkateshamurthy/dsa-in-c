@@ -21,7 +21,8 @@ void verify_strings() {
         &ll_strings_va,
         count,
         "1-one","2-two", "3-three", "4-four", "5-five","6-six");
-    ll_display(strings, "Strings", &string_to_string);
+    ll_display(strings, "Strings-recursively", &string_to_string);
+    ll_display_iterate(strings, "Strings-iteratively", &string_to_string);
     ll_free(strings, (free_data) &free_string);
     printf("\n");
 }
@@ -38,7 +39,8 @@ void verify_persons() {
         (person){"5",30,MALE,  "999", "one"},
         (person){"6",35,FEMALE,"999", "one"});
 
-    ll_display(persons, "Persons", (to_string)&person_ptr_display);
+    ll_display(persons, "Persons-recursively", (to_string)&person_ptr_display);
+    ll_display_iterate(persons, "Persons-iteratively", (to_string)&person_ptr_display);
     ll_free(persons, (free_data)&free_person);
 }
 

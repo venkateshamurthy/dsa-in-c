@@ -17,6 +17,15 @@ ll* iterator_next(iterator* it) {
     return it -> curr;
 }
 
+/* jump iterator by n steps. */
+ll* iterator_next_steps(iterator* it,  int* steps) {
+    while ( it -> curr != NULL && *steps-- > 0) {
+        it -> curr = it -> curr -> next;
+    }
+    return it -> curr;
+}
+
+
 /* whether iterator has any  more elements. */
 bool iterator_has(iterator*  it) {
     bool result =  it -> curr != NULL;
