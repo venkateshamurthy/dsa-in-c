@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "linked_list.h": "c",
+        "linked_list_person.h": "c",
+        "stdarg.h": "c",
+        "string.h": "c",
+        "array": "c",
+        "vector": "c",
+        "stdio.h": "c"
+    }
+}
