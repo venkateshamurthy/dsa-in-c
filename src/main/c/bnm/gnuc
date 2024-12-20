@@ -1,7 +1,8 @@
 #!/bin/bash
+mkdir output
 for file in *.c
 do
  fname=${file/.*/}
  ext=${file/*./}
- gcc -o $fname.o $fname.c
+ gcc -o output/$fname.o $fname.c
 done
