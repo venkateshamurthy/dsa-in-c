@@ -1,0 +1,7 @@
+#!/bin/bash
+for file in *.c
+do
+ fname=${file/.*/}
+ ext=${file/*./}
+ gcc -o $fname.o $fname.c
+done
