@@ -93,7 +93,7 @@ int main () {
 
            case 4:    {if (root == NULL) printf("The tree is empty.\n");
                       else {printf("Post-order:\n");postorder(root);}
-                	  break;}
+                      break;}
 
            case 5:    {if (root == NULL) printf("The tree is empty.\n");
                   	  printf("Enter the element to search: ");
