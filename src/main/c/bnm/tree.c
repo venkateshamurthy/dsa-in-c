@@ -100,7 +100,7 @@ int main () {
                    	  scanf("%d", &key);
                    	  int found = search(root, key);
                       printf("Element %d is %s in the BST.\n", key, found ? "present" : "absent");
-                	  break;}
+                      break;}
 
             default:  printf("Invalid choice. Please try again.\n");
         }
