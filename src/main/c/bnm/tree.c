@@ -19,8 +19,8 @@ NPTR create_node(int info) {
 }
 
 NPTR insert(NPTR temp, int item) {
-    if (temp == NULL) return create_node(item);
-    if (item == temp->data)  return temp;
+    if (temp == NULL) return temp = create_node(item);
+    if (item == temp->data) return temp;
     if (item <  temp->data)
          temp->left = insert(temp->left, item);
     else
@@ -34,11 +34,6 @@ int search(NPTR temp, int item) {
         temp = (item < temp->data) ? temp->left : temp->right;
     }
     return 0;
-}
-
-int maxDepth(NPTR temp) {
-    if  (temp == NULL) return 0;
-    return 1 + (int) fmax(maxDepth(temp->left), maxDepth(temp->right));
 }
 
 // L-->N-->R
@@ -68,47 +63,12 @@ void postorder(NPTR temp) {
      }
  }
 
- /*             4
-        2               6
-   1         3      5        7
-   // 4-->2-->1
-   // 4-->2-->3
-   // 4-->6-->5
-   // 4-->6-->7
- */
- int path[100];
- void printPaths(NPTR temp, int pathLen) {
-    if (temp == NULL) return;
-
-    path[pathLen] = temp->data;
-    pathLen++;
-
-    if (temp->left==NULL && temp->right==NULL) {
-        for(int i = 0; i < pathLen; i++) printf("%d ", path[i]);
-        printf("\n");
-    } else {
-       printPaths(temp->left,  pathLen);
-       printPaths(temp->right, pathLen);
-    }
- }
-
-void create_nodes_get_height() {
-    NPTR root =         create_node(4);
-    root->left =        create_node(2);
-    root->right =       create_node(6);
-    root->left->left =  create_node(1);
-    root->left->right = create_node(3);
-    root->right->left = create_node(5);
-    root->right->right =create_node(7);
-    printf("The maximum depth of the complete binary tree is: %d\n", maxDepth(root));
-}
-
 int main () {
     NPTR root = NULL;
     int choice, value, key;
     while(1) {
         printf("-- Binary Search Tree Menu ---\n");
-        printf("0. Exit 1. Insert 2. Preorder 3. Inorder 4. Postorder 5. Search 6. Height 7. Pre-populate 8. Print all paths\n");
+        printf("0. Exit 1. Insert 2. Preorder 3. Inorder 4. Postorder 5. Search \n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         /*             4
@@ -142,20 +102,9 @@ int main () {
                       printf("Element %d is %s in the BST.\n", key, found ? "present" : "absent");
                 	  break;}
 
-            case 6:   {printf("Height:%d \n", maxDepth(root));
-                      break;}
-
-            case 7:   {int items[] = {4, 2, 6, 1, 3, 5, 7};
-                       printf("Pre-populating known values: ");
-                       for (int i=0; i<7; i++) root = insert(root, items[i]);
-                       break;}
-
-            case 8:    {printf("Print all Paths:\n"); printPaths(root, 0);break;}
-
             default:  printf("Invalid choice. Please try again.\n");
         }
         printf("\n");
     }
     return 0;
 }
-
