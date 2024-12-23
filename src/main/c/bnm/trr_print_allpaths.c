@@ -9,7 +9,7 @@ struct Node {
 };
 
 typedef struct Node * NPTR;
-
+NPTR root = NULL;
 NPTR create_node(int info) {
     NPTR temp = (NPTR) malloc(sizeof(struct Node));
     temp->data = info;
@@ -52,9 +52,11 @@ NPTR insert(NPTR temp, int item) {
  }
 
 int main() {
+
    int items[] = {4, 2, 6, 1, 3, 5, 7};
-   printf("Pre-populating known values: ");
+   printf("Pre-populating known values: 4, 2, 6, 1, 3, 5, 7\n");
    for (int i=0; i<7; i++) root = insert(root, items[i]);
+   printf("Printign all path..\n");
    printPaths(root, 0);
 }
 
